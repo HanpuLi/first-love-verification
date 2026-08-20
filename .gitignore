@@ -1,0 +1,16 @@
+# Never commit third-party media
+*.mp4
+*.mkv
+*.avi
+*.srt
+*.vtt
+*.wav
+*.mp3
+# Frame grabs and reference crops from the film
+*_ref_*.png
+frames/
+stills/
+# Local scratch
+__pycache__/
+.DS_Store
+*.pyc
