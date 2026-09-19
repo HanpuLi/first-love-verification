@@ -70,6 +70,10 @@ copyrighted source media is intentionally absent from CI. See
 [REPRODUCIBILITY.md](REPRODUCIBILITY.md) for the recorded environment boundary and the
 procedure for validating numerical drift.
 
+The citable repository snapshot is **v2026.09.19**. See [CITATION.cff](CITATION.cff)
+for machine-readable citation metadata, [CHANGELOG.md](CHANGELOG.md) for the snapshot
+boundary, and [LICENSING.md](LICENSING.md) for the code/research-media rights boundary.
+
 ---
 
 ## Archived outputs

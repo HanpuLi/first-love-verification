@@ -27,6 +27,11 @@ required = [
     "scripts/subtitle_common.py",
     "tests/test_subtitle_logic.py",
     "REPRODUCIBILITY.md",
+    "CITATION.cff",
+    "LICENSE",
+    "LICENSING.md",
+    "CHANGELOG.md",
+    "VERSION",
     "outputs/a9_shots.json",
 ]
 for rel in required:
@@ -39,9 +44,16 @@ except Exception as exc:
     errors.append(f"outputs/a9_shots.json is invalid: {exc}")
 
 readme = (ROOT / "README.md").read_text()
-for marker in ("No media is redistributed", "Time bases", "Limitations, stated once"):
+for marker in ("No media is redistributed", "Time bases", "Limitations, stated once", "v2026.09.19", "LICENSING.md"):
     if marker not in readme:
         errors.append(f"README lost required methodological boundary: {marker}")
+
+version = (ROOT / "VERSION").read_text().strip() if (ROOT / "VERSION").exists() else None
+citation = (ROOT / "CITATION.cff").read_text() if (ROOT / "CITATION.cff").exists() else ""
+if version != "2026.09.19":
+    errors.append(f"unexpected release snapshot version: {version!r}")
+if f'version: "{version}"' not in citation or 'date-released: "2026-09-19"' not in citation:
+    errors.append("CITATION.cff release metadata does not match VERSION/release date")
 
 if errors:
     raise SystemExit("\n".join(errors))
