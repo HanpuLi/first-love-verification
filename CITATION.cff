@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use these verification materials, please cite the repository and the accompanying essay."
+title: "Verification materials — First Love (Miike Takashi, 2019)"
+type: software
+authors:
+  - family-names: Li
+    given-names: Hanpu
+repository-code: "https://github.com/HanpuLi/first-love-verification"
+url: "https://github.com/HanpuLi/first-love-verification"
