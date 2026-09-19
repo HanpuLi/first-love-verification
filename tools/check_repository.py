@@ -24,6 +24,9 @@ required = [
     "scripts/07_subtitle_parse.py",
     "scripts/08_monica_classify.py",
     "scripts/09_monica_subtitle_analysis.py",
+    "scripts/subtitle_common.py",
+    "tests/test_subtitle_logic.py",
+    "REPRODUCIBILITY.md",
     "outputs/a9_shots.json",
 ]
 for rel in required:

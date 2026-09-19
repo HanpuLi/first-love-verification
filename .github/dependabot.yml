@@ -1,10 +1,7 @@
 version: 2
 updates:
-  - package-ecosystem: pip
-    directory: /
-    schedule:
-      interval: weekly
-    open-pull-requests-limit: 5
+  # Analysis-library upgrades are handled manually because CI has no copyrighted
+  # source media with which to verify numerical reproducibility.
   - package-ecosystem: github-actions
     directory: /
     schedule:
