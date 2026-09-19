@@ -5,24 +5,25 @@ Supports the analysis reported in the essay appendix.
 Media inputs are NOT included in this repository (see README).
 """
 
-MONICA = re.compile(r'\bMonica\b', re.I)
+from collections import Counter
 
-def classify_monica(e):
-    t = e['text']
-    if t.isupper():
-        return 'ON_SCREEN_TEXT'       # visual insert, not oral dialogue
-    if re.search(r',\s*Monica[!?.]*$', t, re.I):
-        return 'VOCATIVE'             # Monica addressed by name; speaker != Monica
-    if t.strip().lower().startswith('monica'):
-        return 'SUBJECT_OR_ADDRESS'   # requires contextual inference
-    return 'THIRD_PERSON_OBJECT'      # Monica is grammatical object/topic;
-                                      # speaker cannot be Monica
+from subtitle_common import MONICA, classify_monica, parse_srt
 
-all_monica = [e for e in en if MONICA.search(e['text'])]
-for e in all_monica:
-    e['monica_cat'] = classify_monica(e)
+en = parse_srt("first_love_en.srt")
+all_monica = [entry for entry in en if MONICA.search(str(entry["text"]))]
+for entry in all_monica:
+    entry["monica_cat"] = classify_monica(entry)
 
-# Results:
+counts = Counter(str(entry["monica_cat"]) for entry in all_monica)
+for category in [
+    "THIRD_PERSON_OBJECT",
+    "VOCATIVE",
+    "ON_SCREEN_TEXT",
+    "SUBJECT_OR_ADDRESS",
+]:
+    print(f"{category}: {counts[category]}")
+
+# Archived result:
 # THIRD_PERSON_OBJECT : 16  (object/topic/addressee of another speaker:
 #                            13 strictly third-person, 2 identification
 #                            lines, 1 direct question to her)

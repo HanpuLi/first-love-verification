@@ -64,7 +64,11 @@ for linearity across the running time. Do not assume it is constant.
 | `09_monica_subtitle_analysis.py` | A.11 | The full discourse pass: scene windows, JA/EN alignment, speech-function counts |
 
 Run with `python3 -m pip install -r requirements.txt` first. The shell scripts need
-`ffmpeg` and `ffprobe` on `PATH`.
+`ffmpeg` and `ffprobe` on `PATH`. The repository keeps analysis libraries inside
+compatibility bands rather than automatically accepting major upgrades, because the
+copyrighted source media is intentionally absent from CI. See
+[REPRODUCIBILITY.md](REPRODUCIBILITY.md) for the recorded environment boundary and the
+procedure for validating numerical drift.
 
 ---
 
