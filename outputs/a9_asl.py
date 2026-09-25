@@ -26,6 +26,6 @@ def detect(start_s, end_s, label):
     return durs
 
 # Melee window per essay
-detect(4300.0,4742.0,"MELEE (essay: 60 shots, ASL 7.320139s)")
+detect(4300.0,4742.0,"MELEE (essay: 62 shots, ASL 7.129s)")
 # Animation window per essay (cut-in 4742 to cut-out ~4768.04)
-detect(4742.0,4768.04,"ANIMATION (essay: 12 shots, ASL 2.190972s)")
+detect(4742.0,4768.04,"ANIMATION (essay: 10 shots, ASL 2.604s)")

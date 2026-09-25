@@ -38,8 +38,8 @@ anything below against a timestamp taken from the essay.
 | Clock | Used for | Runtime |
 |---|---|---|
 | Release track | All timecodes in the essay's **body text** | c. 108 min |
-| Complete off-air FilmFour recording | All timecodes in the essay's **figure captions** ("recording time base") | longer; runs c. 19.5 min ahead of the release track at the one point where both can be anchored |
-| 92.9-minute off-air copy | Some earlier frame passes | 92.9 min; the apartment sequence is substantially reduced on it |
+| Complete off-air FilmFour recording | All timecodes in the essay's **figure captions** ("recording time base") | 134.9 min, 25 fps, 720×576. **PAL-speeded: it runs 4.1667% fast**, and it retains its ad breaks |
+| 92.9-minute off-air copy | Some earlier frame passes | 92.9 min, 24 fps, 1280×538, burned-in Simplified-Chinese subtitles. Cut: the betrayal sequence alone loses 88.4 s, and the ending is shortened |
 
 Body timecodes were verified against `first_love_en.srt`: `Are you going to increase your
 debt again?` at 00:11:29 (subtitle 00:11:29.64); `Yasu, Monica wants a hit` at 00:11:59
@@ -92,3 +92,61 @@ the figures reproduced in the text.
 - Audio was analysed from the recording's own soundtrack; confirmation of perceived acoustic sync is subject to the limitation of off-air encoding quality.
 - Brightness and contrast lifts applied to dark scenes are reading aids, disclosed in each affected caption. They alter exposure and saturation, not framing, scale or staging, which are what the figures are cited for.
 - The Japanese subtitle file is a sparse community upload (39 entries against 1,073 in the English release). Its evidential role is corroborative only; it cannot support systematic speech-function analysis.
+
+---
+
+## How the clocks actually relate (measured, 2026-08)
+
+The gap between the recording and the release track is **not a constant, and not one
+mechanism**. Two effects run against each other:
+
+- **PAL speed-up.** The recording runs **4.1667% fast**. Established by cross-correlating
+  log-RMS audio envelopes: mean normalised correlation **0.817** with the recording
+  stretched by that factor, against **0.575** unstretched and **0.544** stretched the
+  other way. This alone makes the gap *shrink* as the film runs.
+- **Retained ad breaks.** These step the gap *up*, by several minutes at a time.
+
+Within a single stretch between breaks the correspondence is strictly linear: successive
+anchors hold to within **0.1 s**. Across the whole running time it is neither linear nor
+recoverable from any single constant.
+
+**To fix an exact correspondence at a given point**, use `11_subtitle_timebase.py`, which
+correlates the recording's burned-in subtitle activity against `first_love_en.srt`. Over
+the betrayal sequence this gives `t_recording = 0.96 × t_release + 357.0 s` at
+correlation 0.673, confirmed by an independent frame check to within 1.2 s.
+
+What does *not* work, on this material: correlating the subtitle file against an audio
+envelope (0.09–0.36 over the whole film, 0.21–0.375 locally), and single-point anchoring
+from one sampled frame, which was found to be **off by 28.8 s with no internal sign that
+it was wrong**. Two further cautions are in the header of `11_subtitle_timebase.py`.
+
+---
+
+## Which copy each script runs on
+
+| Script | Copy | Note |
+|---|---|---|
+| `04_audio_alignment.py` | **92.9-min copy** | offset 4730 s is on that clock |
+| `05_shot_length.py`, `outputs/a9_asl.py` | **92.9-min copy** | melee window 4300–4742 s; 4742 s is the animation cut-in |
+| `06_face_scale_audit.py` | **92.9-min copy** | see the warning below |
+| `10_shot_scale_betrayal.py` | **complete broadcast recording** | 2147.4–2301.0 s |
+| `11_subtitle_timebase.py` | **complete broadcast recording** | needs the burned-in subtitles |
+| The `librosa` figures for the Figure 5 close-up (5940–5960 s) | **complete broadcast recording** | spectral centroids sit 4.1667% above their release-track values; RMS is unaffected |
+
+## ⚠️ On the Haar cascade in `06_face_scale_audit.py`
+
+`haarcascade_frontalface_default` **fails on the complete broadcast recording**. Tested
+against a target the essay independently confirms — the held medium close-up of Julie at
+5943.3 s, 10.72 s long — Haar returns no face at all, while YuNet returns it on 5 of 5
+sampled frames at 0.458 of frame height. Over the same 160-second window Haar found faces
+in 8 of 14 shots, YuNet in 12 of 14.
+
+The material is 720×576 and lit low-key. **A null result from Haar on this copy is not
+evidence that no face is present**, and no "there is no close-up here" claim should rest
+on it. `10_shot_scale_betrayal.py` uses YuNet for exactly this reason. How Haar performs
+on the higher-resolution 92.9-minute copy, which is what A.10 actually used, has not been
+tested.
+
+The YuNet model (`face_detection_yunet_2023mar.onnx`, OpenCV Zoo) is **not included** —
+it is a third-party file, and it is stored with Git LFS, so fetch it from the media
+endpoint rather than `raw.githubusercontent.com`, which returns a 131-byte pointer.
