@@ -4,6 +4,8 @@ Scripts and archived outputs supporting the computational passages of the essay
 **"False Secondary Contradictions: *Giri*, *Ninjō*, Patriarchal Capitalism, and Qualified
 Brechtian Disruption in Miike Takashi's *First Love*"** (Hanpu Li).
 
+**Project page:** [On Takashi Miike’s *First Love*](https://hanpuli.github.io/writing/first-love/) · **Author:** [Hanpu Li / 李函璞](https://hanpuli.github.io/)
+
 Everything reported in the essay's appendix was produced by the scripts below. They are
 published so that the claims can be checked rather than taken on trust.
 
