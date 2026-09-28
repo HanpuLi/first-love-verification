@@ -10,6 +10,8 @@
 *_ref_*.png
 frames/
 stills/
+# External analysis model (download separately; see README)
+face_detection_yunet_2023mar.onnx
 # Local scratch
 __pycache__/
 .DS_Store

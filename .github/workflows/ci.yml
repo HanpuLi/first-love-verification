@@ -25,8 +25,13 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
-      - name: System dependency
-        run: ffmpeg -version | head -n 1
+      - name: Media-dependent boundary
+        run: |
+          if command -v ffmpeg >/dev/null 2>&1; then
+            ffmpeg -version | head -n 1
+          else
+            echo "ffmpeg is not installed on this CI runner; media-dependent analyses are intentionally not executed in CI."
+          fi
       - name: Install analysis dependencies
         run: python -m pip install -r requirements.txt
       - name: Syntax and import smoke
@@ -34,7 +39,7 @@ jobs:
           python -m compileall -q scripts outputs tools tests
           for f in scripts/*.sh; do bash -n "$f"; done
           python - <<'PY'
-          import cv2, librosa, numpy, scenedetect
+          import cv2, librosa, numpy, scenedetect, scipy
           print("imports ok")
           PY
       - name: Media-free regression tests
