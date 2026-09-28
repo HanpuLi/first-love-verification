@@ -1,0 +1,139 @@
+{
+  "analysis": "ContentDetector cross-copy calibration",
+  "copy_a": "first_love.mp4",
+  "copy_b": "first_love_FilmFour_2026-01-12.mp4",
+  "calibration_interval": {
+    "copy_a_s": [
+      1260.0,
+      1500.0
+    ],
+    "copy_b_s": [
+      1817.8,
+      2047.9
+    ],
+    "rate": 1.0416666,
+    "rate_corrected_offset_s": 633.4,
+    "match_tolerance_s": 0.6
+  },
+  "broadcast_against_copy_a_threshold_27_reference": {
+    "reference_cuts": 36,
+    "thresholds": {
+      "27.0": {
+        "observed_cuts": 30,
+        "matched": 30,
+        "missed": 6,
+        "extra": 0,
+        "match_rate": 0.8333333333333334
+      },
+      "22.0": {
+        "observed_cuts": 35,
+        "matched": 35,
+        "missed": 1,
+        "extra": 0,
+        "match_rate": 0.9722222222222222
+      },
+      "18.0": {
+        "observed_cuts": 39,
+        "matched": 36,
+        "missed": 0,
+        "extra": 3,
+        "match_rate": 1.0
+      },
+      "15.0": {
+        "observed_cuts": 40,
+        "matched": 35,
+        "missed": 1,
+        "extra": 5,
+        "match_rate": 0.9722222222222222
+      },
+      "12.0": {
+        "observed_cuts": 52,
+        "matched": 34,
+        "missed": 2,
+        "extra": 18,
+        "match_rate": 0.9444444444444444
+      },
+      "10.0": {
+        "observed_cuts": 56,
+        "matched": 33,
+        "missed": 3,
+        "extra": 23,
+        "match_rate": 0.9166666666666666
+      },
+      "8.0": {
+        "observed_cuts": 47,
+        "matched": 30,
+        "missed": 6,
+        "extra": 17,
+        "match_rate": 0.8333333333333334
+      },
+      "6.0": {
+        "observed_cuts": 40,
+        "matched": 26,
+        "missed": 10,
+        "extra": 14,
+        "match_rate": 0.7222222222222222
+      }
+    }
+  },
+  "copy_a_against_broadcast_threshold_18_reference": {
+    "reference_cuts": 39,
+    "thresholds": {
+      "27.0": {
+        "observed_cuts": 36,
+        "matched": 36,
+        "missed": 3,
+        "extra": 0,
+        "match_rate": 0.9230769230769231
+      },
+      "22.0": {
+        "observed_cuts": 39,
+        "matched": 39,
+        "missed": 0,
+        "extra": 0,
+        "match_rate": 1.0
+      },
+      "18.0": {
+        "observed_cuts": 39,
+        "matched": 38,
+        "missed": 1,
+        "extra": 1,
+        "match_rate": 0.9743589743589743
+      },
+      "15.0": {
+        "observed_cuts": 45,
+        "matched": 36,
+        "missed": 3,
+        "extra": 9,
+        "match_rate": 0.9230769230769231
+      }
+    }
+  },
+  "complete_broadcast_melee_sensitivity": {
+    "window_s": [
+      6048.0,
+      6703.8
+    ],
+    "note": "Window coordinates were fixed in the 2026-08-26 timebase audit; this table tests detector sensitivity within that fixed window.",
+    "results": [
+      {
+        "threshold": 18.0,
+        "segments": 130,
+        "asl_recording_s": 5.044615384615386,
+        "asl_rate_corrected_s": 5.254807692307694,
+        "longest_s": 75.96000000000004
+      },
+      {
+        "threshold": 22.0,
+        "segments": 96,
+        "asl_recording_s": 6.831250000000002,
+        "asl_rate_corrected_s": 7.115885416666669,
+        "longest_s": 75.96000000000004
+      }
+    ]
+  },
+  "environment": {
+    "python": "3.14.7",
+    "scenedetect": "0.7.1"
+  }
+}

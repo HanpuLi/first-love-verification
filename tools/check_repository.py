@@ -30,8 +30,12 @@ required = [
     "scripts/09_monica_subtitle_analysis.py",
     "scripts/10_shot_scale_betrayal.py",
     "scripts/11_subtitle_timebase.py",
+    "scripts/12_pal_rate_audit.py",
+    "scripts/13_content_detector_calibration.py",
+    "scripts/14_face_detector_calibration.py",
     "scripts/subtitle_common.py",
     "tests/test_subtitle_logic.py",
+    "tests/test_archived_audit_outputs.py",
     "REPRODUCIBILITY.md",
     "CITATION.cff",
     "LICENSE",
@@ -39,6 +43,12 @@ required = [
     "CHANGELOG.md",
     "VERSION",
     "outputs/a9_shots.json",
+    "outputs/pal_rate_audit_2026-09-28.json",
+    "outputs/subtitle_timebase_betrayal_2026-09-28.json",
+    "outputs/manual_timebase_checks_2026-09-28.json",
+    "outputs/face_detector_calibration_2026-09-28.json",
+    "outputs/content_detector_calibration_2026-09-28.json",
+    "outputs/betrayal_shot_face_audit_2026-09-28.json",
 ]
 for rel in required:
     if not (ROOT / rel).is_file():
@@ -78,9 +88,9 @@ else:
 
 readme = (ROOT / "README.md").read_text()
 for marker in (
-    "No media is redistributed",
+    "No film, subtitle, frame-grab or extracted audio media is redistributed",
     "Time bases",
-    "Limitations, stated once",
+    "## Limitations",
     "v2026.09.19",
     "LICENSING.md",
 ):

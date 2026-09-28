@@ -1,0 +1,447 @@
+{
+  "analysis": "Haar/YuNet calibration on known Julie close-up",
+  "video": "first_love_FilmFour_2026-01-12.mp4",
+  "window_s": [
+    5900.0,
+    6060.0
+  ],
+  "scene_detector_threshold": 27.0,
+  "segments": 14,
+  "known_closeup": {
+    "description": "Detector-independent calibration target from the essay/frame pass: held medium close-up of Julie",
+    "expected_start_s": 5943.3
+  },
+  "historical_protocol": {
+    "haar_sample_positions": [
+      0.25,
+      0.5,
+      0.75
+    ],
+    "yunet_sample_positions": [
+      0.15,
+      0.3,
+      0.5,
+      0.7,
+      0.85
+    ],
+    "haar": {
+      "segments_with_face": 8,
+      "segments_total": 14,
+      "median_face_height_ratio_across_seen_segments": 0.12803819444444445,
+      "max_face_height_ratio": 0.3680555555555556,
+      "known_closeup_segment": {
+        "segment": 2,
+        "start_s": 5943.32,
+        "duration_s": 10.720000000000255,
+        "hits": 0,
+        "samples": 3,
+        "median_largest_face_height_ratio": null
+      }
+    },
+    "yunet": {
+      "segments_with_face": 12,
+      "segments_total": 14,
+      "median_face_height_ratio_across_seen_segments": 0.21529453330569798,
+      "max_face_height_ratio": 0.4575691752963596,
+      "known_closeup_segment": {
+        "segment": 2,
+        "start_s": 5943.32,
+        "duration_s": 10.720000000000255,
+        "hits": 5,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.4575691752963596
+      }
+    }
+  },
+  "equal_five_sample_protocol": {
+    "sample_positions": [
+      0.15,
+      0.3,
+      0.5,
+      0.7,
+      0.85
+    ],
+    "haar": {
+      "segments_with_face": 9,
+      "segments_total": 14,
+      "median_face_height_ratio_across_seen_segments": 0.14930555555555555,
+      "max_face_height_ratio": 0.3767361111111111,
+      "known_closeup_segment": {
+        "segment": 2,
+        "start_s": 5943.32,
+        "duration_s": 10.720000000000255,
+        "hits": 0,
+        "samples": 5,
+        "median_largest_face_height_ratio": null
+      }
+    },
+    "yunet": {
+      "segments_with_face": 12,
+      "segments_total": 14,
+      "median_face_height_ratio_across_seen_segments": 0.21529453330569798,
+      "max_face_height_ratio": 0.4575691752963596,
+      "known_closeup_segment": {
+        "segment": 2,
+        "start_s": 5943.32,
+        "duration_s": 10.720000000000255,
+        "hits": 5,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.4575691752963596
+      }
+    }
+  },
+  "rows": {
+    "haar_three_samples": [
+      {
+        "segment": 1,
+        "start_s": 5900.0,
+        "duration_s": 43.31999999999971,
+        "hits": 1,
+        "samples": 3,
+        "median_largest_face_height_ratio": 0.11458333333333333
+      },
+      {
+        "segment": 2,
+        "start_s": 5943.32,
+        "duration_s": 10.720000000000255,
+        "hits": 0,
+        "samples": 3,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 3,
+        "start_s": 5954.04,
+        "duration_s": 12.600000000000364,
+        "hits": 0,
+        "samples": 3,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 4,
+        "start_s": 5966.64,
+        "duration_s": 8.55999999999949,
+        "hits": 1,
+        "samples": 3,
+        "median_largest_face_height_ratio": 0.3177083333333333
+      },
+      {
+        "segment": 5,
+        "start_s": 5975.2,
+        "duration_s": 7.760000000000218,
+        "hits": 0,
+        "samples": 3,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 6,
+        "start_s": 5982.96,
+        "duration_s": 24.399999999999636,
+        "hits": 1,
+        "samples": 3,
+        "median_largest_face_height_ratio": 0.1076388888888889
+      },
+      {
+        "segment": 7,
+        "start_s": 6007.36,
+        "duration_s": 22.76000000000022,
+        "hits": 2,
+        "samples": 3,
+        "median_largest_face_height_ratio": 0.18489583333333331
+      },
+      {
+        "segment": 8,
+        "start_s": 6030.12,
+        "duration_s": 2.4400000000005093,
+        "hits": 0,
+        "samples": 3,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 9,
+        "start_s": 6032.56,
+        "duration_s": 10.159999999999854,
+        "hits": 0,
+        "samples": 3,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 10,
+        "start_s": 6042.72,
+        "duration_s": 1.0399999999999636,
+        "hits": 1,
+        "samples": 3,
+        "median_largest_face_height_ratio": 0.10416666666666667
+      },
+      {
+        "segment": 11,
+        "start_s": 6043.76,
+        "duration_s": 2.9600000000000364,
+        "hits": 0,
+        "samples": 3,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 12,
+        "start_s": 6046.72,
+        "duration_s": 9.519999999999527,
+        "hits": 2,
+        "samples": 3,
+        "median_largest_face_height_ratio": 0.11024305555555555
+      },
+      {
+        "segment": 13,
+        "start_s": 6056.24,
+        "duration_s": 2.4000000000005457,
+        "hits": 3,
+        "samples": 3,
+        "median_largest_face_height_ratio": 0.3680555555555556
+      },
+      {
+        "segment": 14,
+        "start_s": 6058.64,
+        "duration_s": 1.3599999999996726,
+        "hits": 2,
+        "samples": 3,
+        "median_largest_face_height_ratio": 0.14149305555555555
+      }
+    ],
+    "haar_five_samples": [
+      {
+        "segment": 1,
+        "start_s": 5900.0,
+        "duration_s": 43.31999999999971,
+        "hits": 1,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.17708333333333334
+      },
+      {
+        "segment": 2,
+        "start_s": 5943.32,
+        "duration_s": 10.720000000000255,
+        "hits": 0,
+        "samples": 5,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 3,
+        "start_s": 5954.04,
+        "duration_s": 12.600000000000364,
+        "hits": 0,
+        "samples": 5,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 4,
+        "start_s": 5966.64,
+        "duration_s": 8.55999999999949,
+        "hits": 2,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.328125
+      },
+      {
+        "segment": 5,
+        "start_s": 5975.2,
+        "duration_s": 7.760000000000218,
+        "hits": 1,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.13541666666666666
+      },
+      {
+        "segment": 6,
+        "start_s": 5982.96,
+        "duration_s": 24.399999999999636,
+        "hits": 2,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.1111111111111111
+      },
+      {
+        "segment": 7,
+        "start_s": 6007.36,
+        "duration_s": 22.76000000000022,
+        "hits": 3,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.2517361111111111
+      },
+      {
+        "segment": 8,
+        "start_s": 6030.12,
+        "duration_s": 2.4400000000005093,
+        "hits": 0,
+        "samples": 5,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 9,
+        "start_s": 6032.56,
+        "duration_s": 10.159999999999854,
+        "hits": 0,
+        "samples": 5,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 10,
+        "start_s": 6042.72,
+        "duration_s": 1.0399999999999636,
+        "hits": 0,
+        "samples": 5,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 11,
+        "start_s": 6043.76,
+        "duration_s": 2.9600000000000364,
+        "hits": 3,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.1284722222222222
+      },
+      {
+        "segment": 12,
+        "start_s": 6046.72,
+        "duration_s": 9.519999999999527,
+        "hits": 4,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.109375
+      },
+      {
+        "segment": 13,
+        "start_s": 6056.24,
+        "duration_s": 2.4000000000005457,
+        "hits": 4,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.3767361111111111
+      },
+      {
+        "segment": 14,
+        "start_s": 6058.64,
+        "duration_s": 1.3599999999996726,
+        "hits": 2,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.14930555555555555
+      }
+    ],
+    "yunet_five_samples": [
+      {
+        "segment": 1,
+        "start_s": 5900.0,
+        "duration_s": 43.31999999999971,
+        "hits": 5,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.27912084261576336
+      },
+      {
+        "segment": 2,
+        "start_s": 5943.32,
+        "duration_s": 10.720000000000255,
+        "hits": 5,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.4575691752963596
+      },
+      {
+        "segment": 3,
+        "start_s": 5954.04,
+        "duration_s": 12.600000000000364,
+        "hits": 4,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.29257269700368244
+      },
+      {
+        "segment": 4,
+        "start_s": 5966.64,
+        "duration_s": 8.55999999999949,
+        "hits": 5,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.4223722087012397
+      },
+      {
+        "segment": 5,
+        "start_s": 5975.2,
+        "duration_s": 7.760000000000218,
+        "hits": 1,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.20275764995151097
+      },
+      {
+        "segment": 6,
+        "start_s": 5982.96,
+        "duration_s": 24.399999999999636,
+        "hits": 4,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.1188381446732415
+      },
+      {
+        "segment": 7,
+        "start_s": 6007.36,
+        "duration_s": 22.76000000000022,
+        "hits": 3,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.227831416659885
+      },
+      {
+        "segment": 8,
+        "start_s": 6030.12,
+        "duration_s": 2.4400000000005093,
+        "hits": 0,
+        "samples": 5,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 9,
+        "start_s": 6032.56,
+        "duration_s": 10.159999999999854,
+        "hits": 2,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.20195331838395858
+      },
+      {
+        "segment": 10,
+        "start_s": 6042.72,
+        "duration_s": 1.0399999999999636,
+        "hits": 0,
+        "samples": 5,
+        "median_largest_face_height_ratio": null
+      },
+      {
+        "segment": 11,
+        "start_s": 6043.76,
+        "duration_s": 2.9600000000000364,
+        "hits": 3,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.12518533070882162
+      },
+      {
+        "segment": 12,
+        "start_s": 6046.72,
+        "duration_s": 9.519999999999527,
+        "hits": 4,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.12368402216169569
+      },
+      {
+        "segment": 13,
+        "start_s": 6056.24,
+        "duration_s": 2.4000000000005457,
+        "hits": 5,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.3746383984883626
+      },
+      {
+        "segment": 14,
+        "start_s": 6058.64,
+        "duration_s": 1.3599999999996726,
+        "hits": 1,
+        "samples": 5,
+        "median_largest_face_height_ratio": 0.11838764614529079
+      }
+    ]
+  },
+  "model": {
+    "name": "face_detection_yunet_2023mar.onnx",
+    "sha256": "8f2383e4dd3cfbb4553ea8718107fc0423210dc964f9f4280604804ed2552fa4"
+  },
+  "environment": {
+    "python": "3.14.7",
+    "opencv": "4.14.0",
+    "numpy": "2.5.2",
+    "scenedetect": "0.7.1"
+  }
+}

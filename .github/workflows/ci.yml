@@ -34,7 +34,7 @@ jobs:
           python -m compileall -q scripts outputs tools tests
           for f in scripts/*.sh; do bash -n "$f"; done
           python - <<'PY'
-          import cv2, librosa, numpy, scenedetect
+          import cv2, librosa, numpy, scenedetect, scipy
           print("imports ok")
           PY
       - name: Media-free regression tests
