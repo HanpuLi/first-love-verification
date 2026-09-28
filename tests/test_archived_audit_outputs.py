@@ -37,6 +37,10 @@ class ArchivedAuditOutputTests(unittest.TestCase):
     def test_subtitle_timebase_baseline(self):
         data = load("subtitle_timebase_betrayal_2026-09-28.json")
         self.assertEqual(data["fixed_rate"], 0.96)
+        self.assertEqual(data["sampled_frames"], 3751)
+        self.assertEqual(data["target_sampling_hz"], 10.0)
+        self.assertEqual(data["sampling_stride_frames"], 2)
+        self.assertEqual(data["effective_sampling_hz"], 12.5)
         self.assertTrue(math.isclose(data["best_offset_s"], 357.0, abs_tol=1e-6))
         self.assertTrue(
             math.isclose(data["best_correlation"], 0.6732276789563851, abs_tol=1e-12)

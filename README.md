@@ -50,9 +50,11 @@ debt again?` at 00:11:29 (subtitle 00:11:29.64); `Yasu, Monica wants a hit` at 0
 The two off-air copies also differ in playback rate. Script 12 independently tests
 three rate hypotheses from their audio envelopes. The best of the tested hypotheses
 is a **25/24 = 1.0416667** stretch of the FilmFour envelope, consistent with the
-standard PAL speed-up relative to the 24-fps copy. For release-to-FilmFour conversion
-inside one local stretch, scripts 10–11 therefore use the reciprocal rate term
-`0.96`.
+standard PAL speed-up relative to the 24-fps copy. This establishes only the relative
+playback-rate relation between those two off-air copies. Scripts 10–11 use `0.96` as
+a fixed release-to-FilmFour rate input from the earlier audit. Script 12 is consistent
+with that value, but it does not independently establish it for the release track,
+which is not one of script 12's inputs.
 
 Retained ad breaks make the release-to-recording offset piecewise rather than global.
 A local offset must be estimated for the relevant stretch; script 11 does this for the
@@ -149,8 +151,10 @@ The value is a cross-copy edit measurement, not a release-to-recording offset.
 Script 11 solves a narrower problem: where the betrayal sequence sits on the complete
 FilmFour recording once the rate term is fixed at `0.96`.
 
-In the FilmFour window 2100–2400 s it samples the lower subtitle region at nominally
-10 Hz, converts bright subtitle activity to a binary signal, maps the release SRT cue
+In the FilmFour window 2100–2400 s it samples the lower subtitle region with an
+integer frame stride chosen by rounding `fps / 10`. On the archived 25-fps input this
+is a two-frame stride, so the effective sampling rate is **12.5 Hz**, not 10 Hz. It
+then converts bright subtitle activity to a binary signal, maps the release SRT cue
 activity through candidate offsets, and searches offsets 300.0–469.9 s in 0.1-second
 steps. The 2026-09-28 rerun gives:
 

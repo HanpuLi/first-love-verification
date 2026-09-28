@@ -7,7 +7,9 @@ script estimates only the local offset in one recording window by correlating:
 - a binary cue-activity signal from the release SRT.
 
 It does not estimate the 0.96 rate term, establish whole-film linearity, or
-bridge retained ad breaks.  Script 12 independently audits the relative rate.
+bridge retained ad breaks. Script 12 independently audits the relative rate
+between the two off-air copies; it does not establish this release-to-FilmFour
+rate term.
 """
 
 from __future__ import annotations
@@ -26,6 +28,7 @@ RATE = 0.96
 DEFAULT_SEARCH_START = 300.0
 DEFAULT_SEARCH_END = 470.0
 DEFAULT_SEARCH_STEP = 0.1
+TARGET_SAMPLING_HZ = 10.0
 
 
 def to_sec(value: str) -> float:
@@ -75,7 +78,8 @@ def main() -> None:
         )
 
     cap.set(cv2.CAP_PROP_POS_MSEC, args.start * 1000)
-    step = max(1, int(round(fps / 10)))
+    step = max(1, int(round(fps / TARGET_SAMPLING_HZ)))
+    effective_sampling_hz = fps / step
     times, bright = [], []
     frame_index = 0
 
@@ -178,7 +182,9 @@ def main() -> None:
             "offset_step_s": args.search_step,
         },
         "sampled_frames": len(times_array),
-        "nominal_sampling_hz": 10.0,
+        "target_sampling_hz": TARGET_SAMPLING_HZ,
+        "sampling_stride_frames": step,
+        "effective_sampling_hz": float(effective_sampling_hz),
         "subtitle_present_fraction": float(present.mean()),
         "brightness_threshold_fraction": float(brightness_threshold),
         "best_offset_s": best_offset,
@@ -198,6 +204,11 @@ def main() -> None:
     print(
         f"Sampled {len(times_array)} frames in "
         f"{args.start:.1f}-{args.end:.1f} s"
+    )
+    print(
+        f"Sampling stride: {step} frames; effective rate: "
+        f"{effective_sampling_hz:.3f} Hz at {fps:.3f} fps "
+        f"(target {TARGET_SAMPLING_HZ:.1f} Hz)"
     )
     print(f"Subtitle-present fraction: {present.mean():.2f}")
     print(f"Fixed rate: {RATE:.2f} recording seconds per release second")

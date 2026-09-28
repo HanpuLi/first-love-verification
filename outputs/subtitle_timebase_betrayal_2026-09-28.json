@@ -13,7 +13,9 @@
     "offset_step_s": 0.1
   },
   "sampled_frames": 3751,
-  "nominal_sampling_hz": 10.0,
+  "target_sampling_hz": 10.0,
+  "sampling_stride_frames": 2,
+  "effective_sampling_hz": 12.5,
   "subtitle_present_fraction": 0.2772593974940016,
   "brightness_threshold_fraction": 0.006,
   "best_offset_s": 357.00000000001296,
