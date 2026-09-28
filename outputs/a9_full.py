@@ -1,26 +1,64 @@
-from scenedetect import open_video, SceneManager
-from scenedetect.detectors import ContentDetector
 import json
-VID="/sessions/happy-gallant-knuth/mnt/学习/PhD_Applications_2026/02_Writing_Samples_README/FirstLove/first_love.mp4"
+from pathlib import Path
 
-def detect(start_s,end_s,thr=27.0,dsf=None):
-    v=open_video(VID); sm=SceneManager()
-    sm.add_detector(ContentDetector(threshold=thr))
-    if dsf is not None: sm.downscale=dsf
-    v.seek(start_s); sm.detect_scenes(v,end_time=end_s)
-    return [round(e.get_seconds()-s.get_seconds(),6) for s,e in sm.get_scene_list()]
+from scenedetect import SceneManager, open_video
+from scenedetect.detectors import ContentDetector
 
-res={}
-# main per-essay windows
-m=detect(4300.0,4742.0); a=detect(4742.0,4768.0417)
-res['melee_main']={'n':len(m),'asl':sum(m)/len(m),'durs':m}
-res['anim_main']={'n':len(a),'asl':sum(a)/len(a),'durs':a}
-print(f"MELEE 4300-4742: n={len(m)} ASL={sum(m)/len(m):.6f}")
-print(f"ANIM 4742-4768.04: n={len(a)} ASL={sum(a)/len(a):.6f}")
-# sensitivity: alt boundaries + downscale=1
-for (s0,e0,lab) in [(4300.0,4741.75,'melee_altb'),(4741.75,4768.0417,'anim_altb')]:
-    d=detect(s0,e0); print(f"  {lab} {s0}-{e0}: n={len(d)} ASL={sum(d)/len(d):.4f}")
-md1=detect(4300.0,4742.0,dsf=1); print(f"  melee downscale=1: n={len(md1)} ASL={sum(md1)/len(md1):.4f}")
-ad1=detect(4742.0,4768.0417,dsf=1); print(f"  anim downscale=1: n={len(ad1)} ASL={sum(ad1)/len(ad1):.4f}")
-json.dump(res,open("a9_shots.json","w"),indent=1)
-print("saved a9_shots.json")
+VID = "first_love.mp4"
+OUTPUT = Path(__file__).with_name("a9_shots.json")
+
+
+def detect(start_s, end_s, threshold=27.0, downscale=None):
+    video = open_video(VID)
+    manager = SceneManager()
+    manager.add_detector(ContentDetector(threshold=threshold))
+    if downscale is not None:
+        manager.downscale = downscale
+    video.seek(start_s)
+    manager.detect_scenes(video, end_time=end_s)
+    return [
+        round(end.get_seconds() - start.get_seconds(), 6)
+        for start, end in manager.get_scene_list()
+    ]
+
+
+result = {}
+
+# Main per-essay windows. Windowed detection intentionally includes boundary-clipped
+# shot segments so the statistic covers the complete analysis interval.
+melee = detect(4300.0, 4742.0)
+animation = detect(4742.0, 4768.0417)
+result["melee_main"] = {
+    "n": len(melee),
+    "asl": sum(melee) / len(melee),
+    "durs": melee,
+}
+result["anim_main"] = {
+    "n": len(animation),
+    "asl": sum(animation) / len(animation),
+    "durs": animation,
+}
+print(f"MELEE 4300-4742: n={len(melee)} ASL={sum(melee) / len(melee):.6f}")
+print(
+    f"ANIM 4742-4768.04: n={len(animation)} "
+    f"ASL={sum(animation) / len(animation):.6f}"
+)
+
+# Sensitivity: alternate boundaries + downscale=1.
+for start, end, label in [
+    (4300.0, 4741.75, "melee_altb"),
+    (4741.75, 4768.0417, "anim_altb"),
+]:
+    durations = detect(start, end)
+    print(
+        f"  {label} {start}-{end}: n={len(durations)} "
+        f"ASL={sum(durations) / len(durations):.4f}"
+    )
+
+melee_d1 = detect(4300.0, 4742.0, downscale=1)
+print(f"  melee downscale=1: n={len(melee_d1)} ASL={sum(melee_d1) / len(melee_d1):.4f}")
+anim_d1 = detect(4742.0, 4768.0417, downscale=1)
+print(f"  anim downscale=1: n={len(anim_d1)} ASL={sum(anim_d1) / len(anim_d1):.4f}")
+
+OUTPUT.write_text(json.dumps(result, indent=1) + "\n")
+print(f"saved {OUTPUT}")

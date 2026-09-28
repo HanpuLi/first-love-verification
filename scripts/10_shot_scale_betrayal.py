@@ -1,76 +1,97 @@
 """
-PySceneDetect + OpenCV YuNet: shot count, ASL and shot-scale across the betrayal sequence
+PySceneDetect + OpenCV YuNet: shot segmentation and detected-face-height proxy
+across the betrayal sequence.
 
-Supports the shot-level footnote in the body and the timebase note in the appendix.
 Media inputs are NOT included in this repository (see README).
 
-Window: 2147.4-2301.0 s on the complete off-air FilmFour recording, which is the
-betrayal sequence (release track 00:31:05-00:33:45) mapped through
+Window: 2147.4-2301.0 s on the complete off-air FilmFour recording. The window is
+mapped from release 00:31:05-00:33:45 using the local relation
+
     t_recording = 0.96 * t_release + 357.0
-See 11_subtitle_timebase.py for how that mapping is established.
 
-The face detector is YuNet, NOT the Haar cascade used in 06_face_scale_audit.py.
-Haar fails to register the confirmed medium close-up of Julie at 5943.3 s on this
-copy (720x576, low-key lighting); YuNet returns it on 5 of 5 sampled frames at
-0.458 of frame height. A null result from Haar on this material establishes nothing.
+The 0.96 rate term is a fixed analysis assumption; 11_subtitle_timebase.py searches
+the local offset conditional on that rate. This script does not assign categorical
+ECU/CU/MCU/MS/LS labels. It reports a continuous proxy: for five samples in each
+detected shot segment, the largest YuNet face height divided by frame height, then
+the median of the successful samples.
 
-Model: face_detection_yunet_2023mar.onnx from the OpenCV Zoo. It is stored with
-Git LFS, so fetch it from the media endpoint --- raw.githubusercontent.com returns
-a 131-byte pointer file, not the model.
+Model: face_detection_yunet_2023mar.onnx from OpenCV Zoo. The expected Git LFS
+object is SHA-256 8f2383e4dd3cfbb4553ea8718107fc0423210dc964f9f4280604804ed2552fa4
+(232589 bytes). Fetch the LFS object, not the small pointer file.
 """
+
+from hashlib import sha256
+from pathlib import Path
 
 import cv2
 import numpy as np
-from scenedetect import open_video, SceneManager
+from scenedetect import SceneManager, open_video
 from scenedetect.detectors import ContentDetector
 
-VID = "first_love_FilmFour_2026-01-12.mp4"
-MODEL = "face_detection_yunet_2023mar.onnx"
+VID = Path("first_love_FilmFour_2026-01-12.mp4")
+MODEL = Path("face_detection_yunet_2023mar.onnx")
+MODEL_SHA256 = "8f2383e4dd3cfbb4553ea8718107fc0423210dc964f9f4280604804ed2552fa4"
 START, END = 2147.4, 2301.0
 
-video = open_video(VID)
-sm = SceneManager()
-sm.add_detector(ContentDetector(threshold=27.0))
+if not VID.is_file():
+    raise FileNotFoundError(f"missing analysis input: {VID}")
+if not MODEL.is_file():
+    raise FileNotFoundError(f"missing YuNet model: {MODEL}")
+
+model_digest = sha256(MODEL.read_bytes()).hexdigest()
+if model_digest != MODEL_SHA256:
+    raise RuntimeError(
+        f"unexpected YuNet model SHA-256: {model_digest}; expected {MODEL_SHA256}. "
+        "Fetch the OpenCV Zoo Git LFS object rather than the pointer file."
+    )
+
+video = open_video(str(VID))
+manager = SceneManager()
+manager.add_detector(ContentDetector(threshold=27.0))
 video.seek(START)
-sm.detect_scenes(video, end_time=END)
-scenes = [(s.seconds, e.seconds) for s, e in sm.get_scene_list()]
-durations = [e - s for s, e in scenes]
-print(f"Shots: {len(scenes)}")
+manager.detect_scenes(video, end_time=END)
+scenes = [(start.seconds, end.seconds) for start, end in manager.get_scene_list()]
+durations = [end - start for start, end in scenes]
+
+if not durations:
+    raise RuntimeError(f"no shot segments detected in {START}-{END} s")
+
+print(f"Shot segments: {len(scenes)}")
 print(f"ASL: {sum(durations) / len(durations):.3f} s")
 print(f"Longest: {max(durations):.2f} s   Shortest: {min(durations):.2f} s")
 
-cap = cv2.VideoCapture(VID)
-H = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-det = cv2.FaceDetectorYN.create(MODEL, "", (0, 0), 0.5, 0.3, 5000)
+cap = cv2.VideoCapture(str(VID))
+if not cap.isOpened():
+    raise RuntimeError(f"OpenCV could not open video: {VID}")
 
-# Bands calibrated against the essay's own reading: the medium close-up of Julie
-# at 5943.3 s measures 0.458 of frame height.
-def band(x):
-    if x is None:
-        return "no face"
-    return ("ECU" if x >= 0.70 else "CU" if x >= 0.45 else
-            "MCU" if x >= 0.28 else "MS" if x >= 0.15 else "LS")
+detector = cv2.FaceDetectorYN.create(str(MODEL), "", (0, 0), 0.5, 0.3, 5000)
 
-scales = []
-for i, (s, e) in enumerate(scenes, 1):
-    vals = []
-    for p in (0.15, 0.30, 0.50, 0.70, 0.85):
-        cap.set(cv2.CAP_PROP_POS_MSEC, (s + (e - s) * p) * 1000)
-        ok, img = cap.read()
+face_height_ratios = []
+for i, (start, end) in enumerate(scenes, 1):
+    values = []
+    for position in (0.15, 0.30, 0.50, 0.70, 0.85):
+        cap.set(cv2.CAP_PROP_POS_MSEC, (start + (end - start) * position) * 1000)
+        ok, image = cap.read()
         if not ok:
             continue
-        det.setInputSize((img.shape[1], img.shape[0]))
-        _, faces = det.detect(img)
+        detector.setInputSize((image.shape[1], image.shape[0]))
+        _, faces = detector.detect(image)
         if faces is not None and len(faces):
-            vals.append(max(float(f[3]) for f in faces) / H)
-    med = float(np.median(vals)) if vals else None
-    scales.append(med)
-    print(f"  shot {i:2d}  {s:8.1f}s  {e - s:6.2f}s  "
-          f"{med if med is None else round(med, 4)!s:>7}  {len(vals)}/5  {band(med)}")
+            values.append(max(float(face[3]) for face in faces) / image.shape[0])
+
+    median_ratio = float(np.median(values)) if values else None
+    face_height_ratios.append(median_ratio)
+    value_text = "none" if median_ratio is None else f"{median_ratio:.4f}"
+    print(
+        f"  segment {i:2d}  {start:8.1f}s  {end - start:6.2f}s  "
+        f"largest-face-height={value_text:>6}  detections={len(values)}/5"
+    )
+
 cap.release()
 
-seen = [x for x in scales if x is not None]
-print(f"\nShots with a detected face: {len(seen)}/{len(scales)}")
-print(f"Median face height: {np.median(seen):.3f}   Max: {max(seen):.3f}")
-print(f"ECU (>=0.70): {sum(1 for x in seen if x >= 0.70)}")
-print(f"CU  (>=0.45): {sum(1 for x in seen if x >= 0.45)}")
+seen = [value for value in face_height_ratios if value is not None]
+print(f"\nSegments with a detected face: {len(seen)}/{len(face_height_ratios)}")
+if seen:
+    print(f"Median face-height ratio: {np.median(seen):.3f}   Max: {max(seen):.3f}")
+else:
+    print("No faces were detected in the sampled frames.")

@@ -1,84 +1,132 @@
 """
-Locating the release track on the off-air recording via burned-in subtitle activity
+Locate a release-track window on the complete off-air recording using burned-in
+subtitle activity.
 
-Supports the timebase note in the appendix.
 Media inputs are NOT included in this repository (see README).
 
-The recording carries burned-in English subtitles. Their appearance and disappearance
-are precise time events and share a source with the release subtitle file, so
-correlating the two recovers the mapping far more accurately than audio does.
+This script estimates only a local offset. It fixes the rate term at 0.96
+(recording seconds per release second), then searches offsets from 300.0 to 469.9 s
+for the best correlation between burned-in subtitle activity and release-SRT cue
+activity in the 2100-2400 s recording window.
 
-Measured accuracy over the betrayal sequence: correlation 0.673, and the resulting
-model places `What's happening?' (release 00:34:02) at 2317.3 s against 2318.5 s
-observed on a frame check --- 1.2 s.
+The resulting mapping is therefore conditional on:
+  * the fixed 0.96 rate term;
+  * this recording and subtitle file;
+  * the ROI/brightness threshold below; and
+  * a locally plausible offset search range.
 
-For comparison, on the same material: correlating the subtitle file against an audio
-RMS envelope scores 0.09-0.36 searching the whole film and 0.21-0.375 searching
-locally, and single-point anchoring (reading one subtitle off one sampled frame) was
-found to be off by 28.8 s without any internal sign that it was wrong.
-
-NOTE: the offset only holds until the next retained ad break, and the search range
-must be set from the expected offset at that point in the film. Searching a late
-sequence with an early sequence's range returns a plausible-looking false peak
-(0.495 in the case tested). Check that subtitles are actually present in the window
-first: an action sequence with sparse dialogue gives nothing to correlate.
+It does not estimate the rate term, establish whole-film linearity, bridge retained
+ad breaks, or by itself provide an "exact" global time conversion.
 """
 
 import re
+from pathlib import Path
+
 import cv2
 import numpy as np
 
-VID = "first_love_FilmFour_2026-01-12.mp4"
-SRT = "first_love_en.srt"
+VID = Path("first_love_FilmFour_2026-01-12.mp4")
+SRT = Path("first_love_en.srt")
 START, END = 2100.0, 2400.0
-PAL = 0.96                      # release -> recording, the 4.1667% PAL speed-up
+RATE = 0.96
 SEARCH = np.arange(300.0, 470.0, 0.1)
 
-cap = cv2.VideoCapture(VID)
+if not VID.is_file():
+    raise FileNotFoundError(f"missing analysis input: {VID}")
+if not SRT.is_file():
+    raise FileNotFoundError(f"missing subtitle input: {SRT}")
+
+cap = cv2.VideoCapture(str(VID))
+if not cap.isOpened():
+    raise RuntimeError(f"OpenCV could not open video: {VID}")
+
 fps = cap.get(cv2.CAP_PROP_FPS)
-H = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-W = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+if fps <= 0 or height <= 0 or width <= 0:
+    cap.release()
+    raise RuntimeError(
+        f"invalid video metadata: fps={fps}, width={width}, height={height}"
+    )
+
 cap.set(cv2.CAP_PROP_POS_MSEC, START * 1000)
-step = max(1, int(round(fps / 10)))       # sample at 10 Hz
+step = max(1, int(round(fps / 10)))  # approximately 10 Hz
 times, bright = [], []
-n = 0
+frame_index = 0
+
 while True:
-    ok, img = cap.read()
+    ok, image = cap.read()
     if not ok:
         break
     t = cap.get(cv2.CAP_PROP_POS_MSEC) / 1000.0
     if t > END:
         break
-    if n % step == 0:
-        g = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        roi = g[int(H * 0.78):int(H * 0.99), int(W * 0.10):int(W * 0.90)]
+    if frame_index % step == 0:
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        roi = gray[
+            int(height * 0.78):int(height * 0.99),
+            int(width * 0.10):int(width * 0.90),
+        ]
         times.append(t)
         bright.append((roi > 205).mean())
-    n += 1
+    frame_index += 1
+
 cap.release()
-times, bright = np.array(times), np.array(bright)
+
+if not bright:
+    raise RuntimeError(f"no decodable frames sampled in {START}-{END} s")
+
+times = np.asarray(times)
+bright = np.asarray(bright)
 present = (bright > max(0.006, np.percentile(bright, 55))).astype(float)
+if present.std() < 1e-6:
+    raise RuntimeError("subtitle-activity mask is constant; local correlation is undefined")
 
-text = open(SRT, encoding="utf-8-sig", errors="ignore").read()
-def to_sec(s):
-    h, m, rest = s.split(":")
-    sec, ms = rest.split(",")
-    return int(h) * 3600 + int(m) * 60 + int(sec) + int(ms) / 1000
-cues = [(to_sec(a), to_sec(b)) for a, b in
-        re.findall(r"(\d\d:\d\d:\d\d,\d+) --> (\d\d:\d\d:\d\d,\d+)", text)]
+text = SRT.read_text(encoding="utf-8-sig", errors="ignore")
 
-best = (None, -9.0)
-for off in SEARCH:
-    t_rel = (times - off) / PAL
-    ref = np.zeros(len(t_rel))
-    for a, b in cues:
-        ref[(t_rel >= a) & (t_rel <= b)] = 1.0
-    if ref.std() < 1e-6:
+
+def to_sec(value):
+    hours, minutes, rest = value.split(":")
+    seconds, millis = rest.split(",")
+    return (
+        int(hours) * 3600
+        + int(minutes) * 60
+        + int(seconds)
+        + int(millis) / 1000
+    )
+
+
+cues = [
+    (to_sec(start), to_sec(end))
+    for start, end in re.findall(
+        r"(\d\d:\d\d:\d\d,\d+) --> (\d\d:\d\d:\d\d,\d+)", text
+    )
+]
+if not cues:
+    raise RuntimeError(f"no SRT cues parsed from {SRT}")
+
+best_offset = None
+best_correlation = -np.inf
+
+for offset in SEARCH:
+    release_times = (times - offset) / RATE
+    reference = np.zeros(len(release_times))
+    for cue_start, cue_end in cues:
+        reference[
+            (release_times >= cue_start) & (release_times <= cue_end)
+        ] = 1.0
+    if reference.std() < 1e-6:
         continue
-    c = float(np.corrcoef(ref, present)[0, 1])
-    if c > best[1]:
-        best = (off, c)
+
+    correlation = float(np.corrcoef(reference, present)[0, 1])
+    if np.isfinite(correlation) and correlation > best_correlation:
+        best_offset = float(offset)
+        best_correlation = correlation
+
+if best_offset is None:
+    raise RuntimeError("no valid subtitle correlation found in the configured search range")
 
 print(f"Subtitle-present samples: {present.mean():.2f} of window")
-print(f"Best offset: {best[0]:.1f} s   correlation: {best[1]:.3f}")
-print(f"  t_recording = {PAL} * t_release + {best[0]:.1f}")
+print(f"Fixed rate: {RATE:.2f} recording seconds per release second")
+print(f"Best offset: {best_offset:.1f} s   correlation: {best_correlation:.3f}")
+print(f"  t_recording = {RATE} * t_release + {best_offset:.1f}")
