@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, publish/verification-analysis-20260925]
   pull_request:
-    branches: [main]
+    branches: [main, publish/verification-analysis-20260925]
 
 permissions:
   contents: read
