@@ -9,5 +9,13 @@ authors:
 repository-code: "https://github.com/HanpuLi/first-love-verification"
 url: "https://hanpuli.github.io/writing/first-love/"
 version: "2026.10.14"
+doi: "10.5281/zenodo.23355093"
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.23355093"
+    description: "Concept DOI for all versions (resolves to the latest)"
+  - type: doi
+    value: "10.5281/zenodo.23355094"
+    description: "Version DOI for v2026.10.14"
 date-released: "2026-10-14"
 license: MIT
