@@ -91,7 +91,7 @@ for marker in (
     "No film, subtitle, frame-grab or extracted audio media is redistributed",
     "Time bases",
     "## Limitations",
-    "v2026.09.19",
+    "v2026.10.14",
     "LICENSING.md",
 ):
     if marker not in readme:
@@ -99,11 +99,11 @@ for marker in (
 
 version = (ROOT / "VERSION").read_text().strip() if (ROOT / "VERSION").exists() else None
 citation = (ROOT / "CITATION.cff").read_text() if (ROOT / "CITATION.cff").exists() else ""
-if version != "2026.09.19":
+if version != "2026.10.14":
     errors.append(f"unexpected release snapshot version: {version!r}")
 if (
     f'version: "{version}"' not in citation
-    or 'date-released: "2026-09-19"' not in citation
+    or 'date-released: "2026-10-14"' not in citation
 ):
     errors.append("CITATION.cff release metadata does not match VERSION/release date")
 
