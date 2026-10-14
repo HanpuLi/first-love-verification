@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [2026.10.14] - 2026-10-14
+
+Second citable snapshot; first release archived with a Zenodo DOI.
+
+- Adds an independently verifiable Cinemetrics sequence dataset for the betrayal passage
+  (`data/cinemetrics/`): a 17-shot source-frame CSV, the corrected FACT export and a
+  dataset verifier (#10).
+- Archives before-and-after snapshots of the public Cinemetrics record correction
+  (`data/cinemetrics/public-record-audit/`): both extracted shot arrays, SHA-256
+  fingerprints of the original pages, a boundary crosswalk and an offline verifier (#11).
 - Defines A.9 as windowed shot-segment analysis, matching the archived 62 / 7.129 s
   melee result and 10 / 2.604 s animation result.
 - Recovers the 2026-08-26 post-essay verification experiments into reproducible scripts

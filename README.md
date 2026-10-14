@@ -86,8 +86,9 @@ require `ffmpeg` / `ffprobe` as documented by the scripts. Source media are
 intentionally absent from CI, so CI checks importability, media-free tests and the
 integrity of the archived outputs; it cannot regenerate film-dependent measurements.
 
-The citable repository snapshot remains **v2026.09.19**. Scripts 10–14 and the
-2026-09-28 audit outputs are post-snapshot material until a later release is tagged.
+The current citable repository snapshot is **v2026.10.14**, which includes scripts 10–14,
+the 2026-09-28 audit outputs and the Cinemetrics data. The first snapshot, v2026.09.19,
+preserves the analysis used for the essay.
 See [CITATION.cff](CITATION.cff), [CHANGELOG.md](CHANGELOG.md),
 [REPRODUCIBILITY.md](REPRODUCIBILITY.md) and [LICENSING.md](LICENSING.md).
 
