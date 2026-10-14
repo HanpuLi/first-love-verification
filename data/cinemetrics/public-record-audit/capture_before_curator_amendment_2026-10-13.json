@@ -1,0 +1,149 @@
+{
+  "schema": "cinemetrics-public-shot-snapshot-v1",
+  "capture_label": "before_curator_amendment",
+  "public_url": "https://cinemetrics.uchicago.edu/movie/0d9aff11-65ef-4c3e-90e7-99cbde4649ca",
+  "captured_page_file_mtime_utc": "2026-10-13T13:00:56.767+00:00",
+  "time_provenance": "UTC filesystem modification timestamp of the locally saved HTTP response; not a timestamp signed by the website",
+  "raw_http_response_html_sha256": "7079abda2dc5563d7072d8a7ebfcf874ab9064512145769c1da07d870bf0134b",
+  "raw_http_response_bytes": 872224,
+  "source_evidence": "Public HTML returned by the Cinemetrics website and saved locally before/after the curator's amendment; the full HTML remains private",
+  "summary_as_published": {
+    "NoS": "18",
+    "LEN": "02:30.9",
+    "ASL": "8.4",
+    "MSL": "4.7",
+    "submitted_by": "Hanpu Li"
+  },
+  "raw_shots_from_server_payload": [
+    {
+      "number": 1,
+      "type": "",
+      "timestamp": 0,
+      "shotLength": 3,
+      "trendlineShotLength": 13.548110535029604,
+      "movingAverage": 10.816666666666665
+    },
+    {
+      "number": 2,
+      "type": "",
+      "timestamp": 3,
+      "shotLength": 37.8,
+      "movingAverage": 9.885714285714284
+    },
+    {
+      "number": 3,
+      "type": "",
+      "timestamp": 40.8,
+      "shotLength": 3.5,
+      "movingAverage": 10.499999999999998
+    },
+    {
+      "number": 4,
+      "type": "",
+      "timestamp": 44.3,
+      "shotLength": 10.5,
+      "movingAverage": 9.888888888888888
+    },
+    {
+      "number": 5,
+      "type": "",
+      "timestamp": 54.8,
+      "shotLength": 3.9,
+      "movingAverage": 9.069999999999999
+    },
+    {
+      "number": 6,
+      "type": "",
+      "timestamp": 58.7,
+      "shotLength": 6.2,
+      "movingAverage": 9.027272727272726
+    },
+    {
+      "number": 7,
+      "type": "",
+      "timestamp": 64.9,
+      "shotLength": 4.3,
+      "movingAverage": 8.972727272727273
+    },
+    {
+      "number": 8,
+      "type": "",
+      "timestamp": 69.2,
+      "shotLength": 14.8,
+      "movingAverage": 6.372727272727274
+    },
+    {
+      "number": 9,
+      "type": "",
+      "timestamp": 84,
+      "shotLength": 5,
+      "movingAverage": 6.154545454545455
+    },
+    {
+      "number": 10,
+      "type": "",
+      "timestamp": 89,
+      "shotLength": 1.7,
+      "movingAverage": 6.081818181818182
+    },
+    {
+      "number": 11,
+      "type": "",
+      "timestamp": 90.7,
+      "shotLength": 8.6,
+      "movingAverage": 6.009090909090909
+    },
+    {
+      "number": 12,
+      "type": "",
+      "timestamp": 99.3,
+      "shotLength": 2.4,
+      "movingAverage": 5.6090909090909085
+    },
+    {
+      "number": 13,
+      "type": "",
+      "timestamp": 101.7,
+      "shotLength": 9.2,
+      "movingAverage": 7.427272727272728
+    },
+    {
+      "number": 14,
+      "type": "",
+      "timestamp": 110.9,
+      "shotLength": 1.1,
+      "movingAverage": 6.69
+    },
+    {
+      "number": 15,
+      "type": "",
+      "timestamp": 112,
+      "shotLength": 9.7,
+      "movingAverage": 6.877777777777778
+    },
+    {
+      "number": 16,
+      "type": "",
+      "timestamp": 121.7,
+      "shotLength": 3.1,
+      "movingAverage": 7.525
+    },
+    {
+      "number": 17,
+      "type": "",
+      "timestamp": 124.8,
+      "shotLength": 1.8,
+      "movingAverage": 7.371428571428572
+    },
+    {
+      "number": 18,
+      "type": "",
+      "timestamp": 126.6,
+      "shotLength": 24.3,
+      "trendlineShotLength": 5.119655731803121,
+      "movingAverage": 8.200000000000001
+    }
+  ],
+  "shot_array_sha256": "e11ef9b38c0be1a6679365e61e2a388df3913d8d516d81b8aefa3d9e0f0dfc1c",
+  "measurement_scope": "First Love (2019), excerpt only; these are displayed database values, not an independent film-frame reannotation"
+}
